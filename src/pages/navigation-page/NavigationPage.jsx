@@ -1,5 +1,5 @@
 import classes from './NavigationPage.module.css';
-import {Outlet, useNavigate} from "react-router-dom";
+import {Outlet, redirect, useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import {
     getAuthToken,
@@ -54,4 +54,12 @@ export default function NavigationPage() {
             </div>
         </>
     )
+};
+
+export const restrictUnAthorizedAccess = () => {
+    const token = getAuthToken();
+    if (!token) {
+        return redirect('/login');
+    }
+    return null;
 }

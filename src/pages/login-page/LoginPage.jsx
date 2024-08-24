@@ -7,8 +7,8 @@ import {login} from "../../api/authApi.js";
 import {errorNotification, successNotification} from "../../utils/notificationHelper.js";
 import {hasEmptyStringOnly} from "../../utils/utilHelper.js";
 import {displayLoader, hideLoader} from "../../utils/loaderHelper.js";
-import {useNavigate} from "react-router-dom";
-import {storeAuthDataInLocalStorage} from "../../utils/authHelper.js";
+import {redirect, useNavigate} from "react-router-dom";
+import {getAuthToken, storeAuthDataInLocalStorage} from "../../utils/authHelper.js";
 import {dispatch} from "../../store.js";
 import {storeAuthData} from "../../features/authDataSlice.js";
 
@@ -77,4 +77,12 @@ export default function LoginPage() {
             </div>
         </>
     )
+};
+
+export const redirectAuthorizedUser = () => {
+    const token = getAuthToken();
+    if (!token) {
+        return null;
+    }
+    return redirect('/');
 }
