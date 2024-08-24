@@ -1,0 +1,22 @@
+.navigationBox {
+    background-color: darkviolet;
+    display: flex;
+    padding: 1rem;
+}
+
+.navigationTab {
+    background: whitesmoke;
+    padding: 0.5em 1em;
+    border-radius: 1em;
+    outline: none;
+}
+
+.navigationTab:hover {
+    background-color: antiquewhite;
+    cursor: pointer;
+}
+
+.contentBox {
+    width: 90vw;
+    margin: 0 auto;
+}
