@@ -10,7 +10,7 @@ import {errorNotification, successNotification} from "../../utils/notificationHe
 import {storeAuthDataInLocalStorage} from "../../utils/authHelper.js";
 import {dispatch} from "../../store.js";
 import {storeAuthData} from "../../features/authDataSlice.js";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 export default function SignUpPage() {
     const navigate = useNavigate();
@@ -60,14 +60,14 @@ export default function SignUpPage() {
                     <div className={`form-group my-2`}>
                         <label htmlFor={`name`}>Name</label>
                         <input id={`name`} type={`text`} {...signupForm.getFieldProps('name')}
-                               className={`form-control`} autoFocus/>
+                               className={`form-control`}/>
                         {(signupForm.touched.name && signupForm.errors.name) &&
                             <span className="text-danger">{signupForm.errors.name}</span>}
                     </div>
 
                     <div className={`form-group my-2`}>
                         <label htmlFor={`email`}>Email</label>
-                        <input id={`email`} type={`text`} {...signupForm.getFieldProps('email')}
+                        <input id={`email`} type={`email`} {...signupForm.getFieldProps('email')}
                                className={`form-control`}/>
                         {(signupForm.touched.email && signupForm.errors.email) &&
                             <span className="text-danger">{signupForm.errors.email}</span>}
@@ -88,6 +88,7 @@ export default function SignUpPage() {
                         </Button>
                     </div>
                 </form>
+                <Link to={`/login`}>Back to login</Link>
             </div>
         </>
     )

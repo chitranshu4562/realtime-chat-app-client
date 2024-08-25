@@ -20,3 +20,9 @@
     width: 90vw;
     margin: 0 auto;
 }
+
+.navHeader {
+    font-size: 1.5em;
+    color: #ffffff;
+    margin-bottom: 0;
+}

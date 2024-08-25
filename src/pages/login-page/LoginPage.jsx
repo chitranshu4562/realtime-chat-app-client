@@ -7,7 +7,7 @@ import {login} from "../../api/authApi.js";
 import {errorNotification, successNotification} from "../../utils/notificationHelper.js";
 import {hasEmptyStringOnly} from "../../utils/utilHelper.js";
 import {displayLoader, hideLoader} from "../../utils/loaderHelper.js";
-import {redirect, useNavigate} from "react-router-dom";
+import {Link, redirect, useNavigate} from "react-router-dom";
 import {getAuthToken, storeAuthDataInLocalStorage} from "../../utils/authHelper.js";
 import {dispatch} from "../../store.js";
 import {storeAuthData} from "../../features/authDataSlice.js";
@@ -54,8 +54,8 @@ export default function LoginPage() {
                 <form onSubmit={loginForm.handleSubmit}>
                     <div className={`form-group my-2`}>
                         <label htmlFor={`email`}>Email</label>
-                        <input id={`email`} type={`text`} {...loginForm.getFieldProps('email')}
-                               className={`form-control`} autoFocus/>
+                        <input id={`email`} type={`email`} {...loginForm.getFieldProps('email')}
+                               className={`form-control`}/>
                         {(loginForm.touched.email && loginForm.errors.email) &&
                             <span className="text-danger">{loginForm.errors.email}</span>}
                     </div>
@@ -74,6 +74,9 @@ export default function LoginPage() {
                         </Button>
                     </div>
                 </form>
+                <div className={`d-flex justify-content-end`}>
+                    <Link to={`/sign-up`}>Create new user</Link>
+                </div>
             </div>
         </>
     )

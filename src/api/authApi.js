@@ -1,11 +1,11 @@
-import axios from "axios";
 import {API_URL} from "./config.js";
+import axiosInstance from "./axiosConfig.js";
 
 
 export const login = (loginData) => {
-    return axios.post(API_URL + 'authentication/login', loginData);
+    return axiosInstance.post(API_URL + 'authentication/login', loginData);
 }
 
 export const signUp = (signupData) => {
-    return axios.post(API_URL + 'authentication/signup-user', signupData);
+    return axiosInstance.post(API_URL + 'authentication/signup-user', signupData);
 }

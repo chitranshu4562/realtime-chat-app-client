@@ -1,6 +1,5 @@
 import classes from './NavigationPage.module.css';
-import {Outlet, redirect, useNavigate} from "react-router-dom";
-import {toast} from "react-toastify";
+import {Link, Outlet, redirect, useNavigate} from "react-router-dom";
 import {
     getAuthToken,
     getAuthUserData,
@@ -10,9 +9,13 @@ import {
 import {dispatch} from "../../store.js";
 import {removeAuthData, storeAuthData} from "../../features/authDataSlice.js";
 import {useEffect} from "react";
+import {useSelector} from "react-redux";
+import {Avatar} from "@mui/material";
+import userProfileIcon from "../../assets/user-profile-icon.jpg";
 
 export default function NavigationPage() {
     const navigate = useNavigate();
+    const currentUser = useSelector(state => state.authData.user);
     const handleLogout = () => {
         removeAuthDataFromLocalStorage();
         dispatch(removeAuthData());
@@ -39,19 +42,26 @@ export default function NavigationPage() {
     }, []);
     return (
         <>
-            <div className={`row ${classes.navigationBox}`}>
-                <div className={`col-11`}>
-                    <button className={classes.navigationTab}>Home</button>
-                    <button className={classes.navigationTab} onClick={() => toast('Hello world')}>Notify</button>
+            {currentUser && <>
+                <div className={`row ${classes.navigationBox}`}>
+                    <div className={`col-11`}>
+                        {/*<button className={classes.navigationTab}>Home</button>*/}
+                        <div className={`d-flex gap-2`}>
+                            <Link to={`user-profile`}>
+                                <Avatar src={currentUser?.avatar ? currentUser.avatar : userProfileIcon}/>
+                            </Link>
+                            <p className={classes.navHeader}>{currentUser.name}</p>
+                        </div>
+                    </div>
+                    <div className={`col-1`}>
+                        <button className={classes.navigationTab} onClick={handleLogout}>Logout</button>
+                    </div>
                 </div>
-                <div className={`col-1`}>
-                <button className={classes.navigationTab} onClick={handleLogout}>Logout</button>
-                </div>
-            </div>
 
-            <div className={classes.contentBox}>
-                <Outlet/>
-            </div>
+                <div className={classes.contentBox}>
+                    <Outlet/>
+                </div>
+            </>}
         </>
     )
 };
