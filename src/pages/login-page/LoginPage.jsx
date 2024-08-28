@@ -11,29 +11,34 @@ import {Link, redirect, useNavigate} from "react-router-dom";
 import {getAuthToken, storeAuthDataInLocalStorage} from "../../utils/authHelper.js";
 import {dispatch} from "../../store.js";
 import {storeAuthData} from "../../features/authDataSlice.js";
+import {useMutation} from "@tanstack/react-query";
 
 export default function LoginPage() {
     const navigate = useNavigate();
+    const { mutate } = useMutation({
+        mutationFn: login,
+        onSuccess: (result) => {
+            hideLoader();
+            successNotification(result.data.message);
+            loginForm.handleReset();
+            const authData = {
+                authToken: result.data.authToken,
+                expirationTime: result.data.expirationTime,
+                user: result.data.user
+            }
+            storeAuthDataInLocalStorage(authData);
+            dispatch(storeAuthData(authData));
+            navigate('/');
+
+        },
+        onError: (error) => {
+            hideLoader();
+            errorNotification(error.response.data.message);
+        }
+    });
     const handleLogin = (values) => {
         displayLoader();
-        login(values)
-            .then(result => {
-                hideLoader();
-                successNotification(result.data.message);
-                loginForm.handleReset();
-                const authData = {
-                    authToken: result.data.authToken,
-                    expirationTime: result.data.expirationTime,
-                    user: result.data.user
-                }
-                storeAuthDataInLocalStorage(authData);
-                dispatch(storeAuthData(authData));
-                navigate('/');
-            })
-            .catch(error => {
-                hideLoader();
-                errorNotification(error.response.data.message);
-            })
+        mutate(values);
     }
 
     const loginForm = useFormik({

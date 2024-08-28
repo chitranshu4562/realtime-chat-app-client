@@ -45,12 +45,14 @@ export default function NavigationPage() {
             {currentUser && <>
                 <div className={`row ${classes.navigationBox}`}>
                     <div className={`col-11`}>
-                        {/*<button className={classes.navigationTab}>Home</button>*/}
                         <div className={`d-flex gap-2`}>
                             <Link to={`user-profile`}>
                                 <Avatar src={currentUser?.avatar ? currentUser.avatar : userProfileIcon}/>
                             </Link>
                             <p className={classes.navHeader}>{currentUser.name}</p>
+                            <Link to={`/home`}>
+                                <button className={classes.navigationTab}>Home</button>
+                            </Link>
                         </div>
                     </div>
                     <div className={`col-1`}>
@@ -58,7 +60,7 @@ export default function NavigationPage() {
                     </div>
                 </div>
 
-                <div className={classes.contentBox}>
+                <div className={`container ${classes.contentBox}`}>
                     <Outlet/>
                 </div>
             </>}

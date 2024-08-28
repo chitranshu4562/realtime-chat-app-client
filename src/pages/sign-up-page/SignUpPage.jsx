@@ -11,29 +11,34 @@ import {storeAuthDataInLocalStorage} from "../../utils/authHelper.js";
 import {dispatch} from "../../store.js";
 import {storeAuthData} from "../../features/authDataSlice.js";
 import {Link, useNavigate} from "react-router-dom";
+import {useMutation} from "@tanstack/react-query";
 
 export default function SignUpPage() {
     const navigate = useNavigate();
+    const { mutate } = useMutation({
+        mutationFn: signUp,
+        onSuccess: (result) => {
+            hideLoader();
+            successNotification(result.data.message);
+            signupForm.handleReset();
+            const authData = {
+                authToken: result.data.authToken,
+                expirationTime: result.data.expirationTime,
+                user: result.data.user
+            }
+            storeAuthDataInLocalStorage(authData);
+            dispatch(storeAuthData(authData));
+            navigate('/');
+        },
+        onError: (error) => {
+            hideLoader();
+            errorNotification(error.response.data.message);
+        }
+    });
+
     const handleSignUp = (values) => {
         displayLoader();
-        signUp(values)
-            .then(result => {
-                hideLoader();
-                successNotification(result.data.message);
-                signupForm.handleReset();
-                const authData = {
-                    authToken: result.data.authToken,
-                    expirationTime: result.data.expirationTime,
-                    user: result.data.user
-                }
-                storeAuthDataInLocalStorage(authData);
-                dispatch(storeAuthData(authData));
-                navigate('/');
-            })
-            .catch(error => {
-                hideLoader();
-                errorNotification(error.response.data.message);
-            });
+        mutate(values);
     }
 
     const signupForm = useFormik({

@@ -9,6 +9,8 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import {Button} from "@mui/material";
 import {dispatch} from "../../../store.js";
 import {storeAuthData} from "../../../features/authDataSlice.js";
+import {getAuthToken} from "../../../utils/authHelper.js";
+import {AUTH_USER} from "../../../utils/Constants.js";
 
 export default function UserProfilePage() {
     const [user, setUser] = useState(null);
@@ -23,7 +25,6 @@ export default function UserProfilePage() {
                 hideLoader();
                 successNotification(result.data.message);
                 setUser(result.data.user);
-                dispatch(storeAuthData(result.data.user));
                 if (result.data.user?.avatar) {
                     setUserAvatar(result.data.user.avatar);
                 }
@@ -58,6 +59,18 @@ export default function UserProfilePage() {
                 handleClose();
                 successNotification(result.data.message);
                 setUserAvatar(result.data.user.avatar);
+                const authToken = getAuthToken();
+                const authData = {
+                    authToken: authToken,
+                    user: result.data.user
+                }
+                const authUser = {
+                    name: result.data.user.name,
+                    avatar: result.data.user.avatar,
+                    id: result.data.user._id
+                }
+                localStorage.setItem(AUTH_USER, JSON.stringify(authUser));
+                dispatch(storeAuthData(authData));
             })
             .catch(error => {
                 hideLoader();
