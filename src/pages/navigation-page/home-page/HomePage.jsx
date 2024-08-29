@@ -2,8 +2,8 @@ import classes from "./HomePage.module.css";
 import {useState} from "react";
 import AddCircleSharpIcon from '@mui/icons-material/AddCircleSharp';
 import {Button, IconButton} from "@mui/material";
-import ModalBox from "../../../components/ModalBox.jsx";
 import CreateGroup from "../../../components/create-group/CreateGroup.jsx";
+import ChatList from "../../../components/chat-list/ChatList.jsx";
 
 export default function HomePage() {
     const [isOpen, setIsOpen] = useState(false);
@@ -31,7 +31,7 @@ export default function HomePage() {
                     </Button>
                 </div>
                 <div className={`col-3`}>
-
+                    <ChatList/>
                 </div>
                 <div className={`col-9`}>
                     <div className={`w-100 h-100 d-flex justify-content-center align-items-center`}>

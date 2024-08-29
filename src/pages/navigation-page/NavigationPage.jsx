@@ -11,7 +11,7 @@ import {removeAuthData, storeAuthData} from "../../features/authDataSlice.js";
 import {useEffect} from "react";
 import {useSelector} from "react-redux";
 import {Avatar} from "@mui/material";
-import userProfileIcon from "../../assets/user-profile-icon.jpg";
+import userProfileIcon from "../../assets/user-avatar.png";
 
 export default function NavigationPage() {
     const navigate = useNavigate();

@@ -2,10 +2,10 @@ import {useEffect, useState} from "react";
 import ModalBox from "../ModalBox.jsx";
 import {Button} from "@mui/material";
 import CustomMultiSelect from "../custom-multi-select/CustomMultiSelect.jsx";
-import {getContacts} from "../../api/contactsApi.js";
 import {displayLoader, hideLoader} from "../../utils/loaderHelper.js";
 import {errorNotification, successNotification} from "../../utils/notificationHelper.js";
 import {createGroup} from "../../api/groupApi.js";
+import {getUsers} from "../../api/usersApi.js";
 
 export default function CreateGroup({open, onClose}) {
     const [contacts, setContacts] = useState([]);
@@ -14,7 +14,7 @@ export default function CreateGroup({open, onClose}) {
 
     useEffect(() => {
         displayLoader();
-        getContacts()
+        getUsers()
             .then(result => {
                 hideLoader();
                 const temp = result.data.contacts.map(contact => {
