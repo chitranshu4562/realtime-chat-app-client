@@ -5,10 +5,10 @@ export const createGroup = (groupData = '') => {
     return axiosInstance.post(API_URL + 'group/create-group', groupData);
 }
 
-export const getGroups = (searchTerm = '') => {
+export const getGroups = (searchTerm = '', groupId = '') => {
     return axiosInstance.get(API_URL + 'group/get-groups', {
         params: {
-            searchTerm
+            searchTerm, groupId
         }
     })
 }

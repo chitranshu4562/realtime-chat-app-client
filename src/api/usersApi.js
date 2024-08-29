@@ -16,10 +16,10 @@ export const uploadUserAvatar = (formData, userId) => {
     })
 }
 
-export const getUsers = (searchTerm) => {
+export const getUsers = (searchTerm = '', userId = '') => {
     return axiosInstance.get(API_URL + 'users/get-users', {
         params: {
-            searchTerm
+            searchTerm, userId
         }
     })
 }

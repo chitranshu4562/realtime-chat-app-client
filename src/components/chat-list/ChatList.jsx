@@ -6,8 +6,10 @@ import {getUsers} from "../../api/usersApi.js";
 import {displayLoader, hideLoader} from "../../utils/loaderHelper.js";
 import {errorNotification, successNotification} from "../../utils/notificationHelper.js";
 import ChatCard from "../chat-card/ChatCard.jsx";
+import {Link, useNavigate} from "react-router-dom";
 
 export default function ChatList() {
+    const navigate = useNavigate();
     const [isGroup, setIsGroup] = useState(false);
     const [listData, setListData] = useState([]);
     const [searchInput, setSearchInput] = useState('');
@@ -21,6 +23,7 @@ export default function ChatList() {
         } else if (identifier === 'GROUPS') {
             setIsGroup(true);
         }
+        navigate('/home');
     }
 
     const getApiFunction = () => {
@@ -79,9 +82,14 @@ export default function ChatList() {
                 </div>
 
                 <div>
+                    {listData.length === 0 && (
+                        <h6 className={`text-center my-2`}>No data found</h6>
+                    )}
                     {listData.length > 0 && listData.map(data => {
                         return (
-                            <ChatCard key={data._id} cardData={data} />
+                            <Link to={`conversation/${data._id}/${isGroup}`}>
+                                <ChatCard key={data._id} cardData={data} />
+                            </Link>
                         )
                     })}
                 </div>

@@ -6,9 +6,11 @@ import {displayLoader, hideLoader} from "../../utils/loaderHelper.js";
 import {errorNotification, successNotification} from "../../utils/notificationHelper.js";
 import {createGroup} from "../../api/groupApi.js";
 import {getUsers} from "../../api/usersApi.js";
+import {useSelector} from "react-redux";
 
 export default function CreateGroup({open, onClose}) {
-    const [contacts, setContacts] = useState([]);
+    const loggedInUser = useSelector(state => state.authData.user);
+    const [users, setUsers] = useState([]);
     const [participants, setParticipants] = useState([]);
     const [groupName, setGroupName] = useState('');
 
@@ -17,13 +19,14 @@ export default function CreateGroup({open, onClose}) {
         getUsers()
             .then(result => {
                 hideLoader();
-                const temp = result.data.contacts.map(contact => {
-                    return {
-                        value: contact._id,
-                        label: contact.name
-                    }
-                })
-                setContacts(temp);
+                const temp = result.data.data.filter(user => user._id.toString() !== loggedInUser.id.toString())
+                    .map(user => {
+                        return {
+                            value: user._id,
+                            label: user.name
+                        }
+                    })
+                setUsers(temp);
             })
             .catch(error => {
                 hideLoader();
@@ -80,7 +83,7 @@ export default function CreateGroup({open, onClose}) {
                         placeHolder="Select participants"
                         value={participants}
                         onChange={handleParticipantsChange}
-                        options={contacts}/>
+                        options={users}/>
                     <div className={`d-flex justify-content-center gap-2`}>
                         <Button variant="contained" onClick={handleClose}>Cancel</Button>
                         <Button variant="contained" type="submit">Create Group</Button>
