@@ -1,0 +1,15 @@
+.chatText {
+    display: flex;
+    justify-content: end;
+    gap: 5px;
+    background-color: #ffe3ff;
+    border-radius: 12px;
+    padding: 5px;
+}
+
+.timestamp {
+    font-size: 12px;
+    color: #887f7f;
+    display: flex;
+    align-items: end;
+}

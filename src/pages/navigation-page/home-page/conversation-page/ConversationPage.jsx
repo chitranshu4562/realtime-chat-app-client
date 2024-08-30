@@ -26,22 +26,6 @@ export default function ConversationPage() {
             return getUsers('', chatEntityId);
         }
     }
-    const handleCreateConversation = () => {
-        const participants = [];
-        participants.push(loggedInUser.id);
-        const data = {
-            receiverId: chatEntityId,
-            isGroup: isGroup
-        }
-        createConversation(data)
-            .then(result => {
-                console.log(result.data);
-                setConversationId(result.data.data.id);
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }
 
     const handleGetChatEntityDetails = () => {
         getApiFunction()
@@ -52,11 +36,25 @@ export default function ConversationPage() {
                 errorNotification(error.response.data.message);
             })
     }
+    const handleConversationCreation = () => {
+        const data = {
+            isGroup: isGroup,
+            chatEntityId: chatEntityId
+        }
+        createConversation(data)
+            .then(result => {
+                console.log(result);
+                setConversationId(result.data.data._id);
+            })
+            .catch(error => {
+                console.error(error);
+            })
+    }
 
     useEffect(() => {
         setChatEntity(null);
         handleGetChatEntityDetails();
-        handleCreateConversation();
+        handleConversationCreation();
     }, [chatEntityId, isGroup]);
 
     useEffect(() => {
@@ -71,8 +69,9 @@ export default function ConversationPage() {
     const handleSentMessage = (e) => {
         e.preventDefault();
         const data = {
-            message,
-            conversationId
+            message: message,
+            conversationId: conversationId,
+            senderId: loggedInUser.id
         }
         socket.emit('conversation', data);
         setMessage('');
@@ -94,8 +93,8 @@ export default function ConversationPage() {
                         <div className={`p-2`}>
                             <p className={`my-1`}>{chatEntity.name}</p>
                         </div>
-                        <div className={`mb-1 ${classes.chatTextBox}`}>
-                            <ChatBox/>
+                        <div className={`mb-2 p-1 ${classes.chatTextBox}`}>
+                            <ChatBox conversationId={conversationId}/>
                         </div>
                         <form onSubmit={handleSentMessage} className={`d-flex`}>
                             <input
