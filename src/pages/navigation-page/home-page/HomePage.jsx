@@ -21,7 +21,7 @@ export default function HomePage() {
         <>
             {isOpen && <CreateGroup open={isOpen} onClose={handleClose}/>}
             <div className={`row mt-4 ${classes.homeContainer}`}>
-                <div className={`d-flex justify-content-end`}>
+                <div className={`d-flex justify-content-end my-2`}>
                     <Button
                         variant="contained"
                         sx={{ backgroundColor: 'green' }}
@@ -34,7 +34,7 @@ export default function HomePage() {
                 <div className={`col-3`}>
                     <ChatList/>
                 </div>
-                <div className={`col-9`}>
+                <div className={`col-9 ${classes.chatRoom}`}>
                     <Outlet/>
                 </div>
             </div>

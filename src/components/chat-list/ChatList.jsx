@@ -1,4 +1,5 @@
 import {useCallback, useEffect, useState} from "react";
+import classes from "./ChatList.module.css";
 import {Button} from "@mui/material";
 import {debounce} from "lodash";
 import {getGroups} from "../../api/groupApi.js";
@@ -81,13 +82,13 @@ export default function ChatList() {
                     />
                 </div>
 
-                <div>
+                <div className={classes.userList}>
                     {listData.length === 0 && (
                         <h6 className={`text-center my-2`}>No data found</h6>
                     )}
                     {listData.length > 0 && listData.map(data => {
                         return (
-                            <Link to={`conversation/${data._id}/${isGroup}`}>
+                            <Link to={`conversation/${data._id}/${isGroup}`} key={data._id}>
                                 <ChatCard key={data._id} cardData={data} />
                             </Link>
                         )

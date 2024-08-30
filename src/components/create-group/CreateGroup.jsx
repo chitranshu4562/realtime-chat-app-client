@@ -63,7 +63,6 @@ export default function CreateGroup({open, onClose}) {
             .then(result => {
                 hideLoader();
                 successNotification(result.data.message);
-                console.log(result.data.data);
                 handleClose();
             })
             .catch(error => {

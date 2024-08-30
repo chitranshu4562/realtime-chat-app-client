@@ -28,7 +28,6 @@ export default function UserProfilePage() {
                 if (result.data.user?.avatar) {
                     setUserAvatar(result.data.user.avatar);
                 }
-                console.log()
             })
             .catch(error => {
                 hideLoader();

@@ -31,7 +31,6 @@ export default function NavigationPage() {
         }
 
         const expTime = getExpirationTimeInSeconds();
-        console.log('Expiration time: ', expTime);
         if (expTime < 0) {
             handleLogout();
         } else {
