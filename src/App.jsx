@@ -5,6 +5,7 @@ import {ToastContainer} from "react-toastify";
 import SocketProvider from "./context/SocketContext.jsx";
 
 function App() {
+
     return (
         <>
             <SocketProvider>

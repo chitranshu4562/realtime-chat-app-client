@@ -57,15 +57,6 @@ export default function ConversationPage() {
         handleConversationCreation();
     }, [chatEntityId, isGroup]);
 
-    useEffect(() => {
-        handleReceivedMessage();
-        return () => {
-            if (socket) {
-                socket.off('conversation');
-            }
-        }
-    }, []);
-
     const handleSentMessage = (e) => {
         e.preventDefault();
         const data = {
@@ -77,24 +68,18 @@ export default function ConversationPage() {
         setMessage('');
     }
 
-    const handleReceivedMessage = () => {
-        if (socket) {
-            socket.on('conversation', (messageData) => {
-                console.log('Received from conversation channel', messageData);
-
-            })
-        }
-    }
     return (
         <>
             {chatEntity ? (
                 <>
-                    <div className={`h-100`}>
+                    <div style={{ height: '70vh' }}>
                         <div className={`p-2`}>
                             <p className={`my-1`}>{chatEntity.name}</p>
                         </div>
-                        <div className={`mb-2 p-1 ${classes.chatTextBox}`}>
-                            <ChatBox conversationId={conversationId}/>
+                        <div className={`mb-2 p-1 ${classes.chatTextBox}`} id="chat-box-container">
+                            <div className={classes.chatBoxContainer}>
+                                {conversationId && <ChatBox conversationId={conversationId}/>}
+                            </div>
                         </div>
                         <form onSubmit={handleSentMessage} className={`d-flex`}>
                             <input

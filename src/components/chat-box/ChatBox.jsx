@@ -3,8 +3,10 @@ import {useEffect, useState} from "react";
 import {getConversation} from "../../api/conversationApi.jsx";
 import {useSelector} from "react-redux";
 import {formatTo12HoursTime} from "../../utils/utilHelper.js";
+import {useSocket} from "../../context/SocketContext.jsx";
 
 export default function ChatBox({ conversationId }) {
+    const socket = useSocket();
     const loggedInUser = useSelector(state => state.authData.user);
     const [chats, setChats] = useState([])
 
@@ -18,9 +20,41 @@ export default function ChatBox({ conversationId }) {
             })
     }
 
+    const handleReceivedMessage = () => {
+        if (socket) {
+            socket.on('conversation', (messageData) => {
+                console.log('Received from conversation channel', messageData);
+                if (conversationId === messageData.conversation.toString()) {
+                    setChats(prevState => [...prevState, messageData])
+                }
+            })
+        }
+    }
+
+    useEffect(() => {
+        handleReceivedMessage();
+
+        return () => {
+            if (socket) {
+                socket.off('conversation', () => {
+                    console.log('Stop receiving messages from conversation channel')
+                })
+            }
+        }
+    }, []);
+
     useEffect(() => {
         handleFetchChats();
-    }, []);
+    }, [conversationId]);
+
+    const setScrollToBottom = () => {
+        const element = document.getElementById('chat-box-container');
+        element.scrollTop = element.scrollHeight;
+    }
+
+    useEffect(() => {
+        setScrollToBottom();
+    }, [chats]);
     return (
         <>
             {chats.length === 0 && (

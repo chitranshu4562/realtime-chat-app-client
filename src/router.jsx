@@ -6,8 +6,10 @@ import SignUpPage from "./pages/sign-up-page/SignUpPage.jsx";
 import UserProfilePage from "./pages/navigation-page/user-profile-page/UserProfilePage.jsx";
 import ConversationPage from "./pages/navigation-page/home-page/conversation-page/ConversationPage.jsx";
 import WelcomePage from "./pages/navigation-page/home-page/WelcomePage.jsx";
+import Test from "./pages/Test.jsx";
 
 const router = createBrowserRouter([
+    {path: '/test', element: <Test/>},
     {path: '/', element: <NavigationPage/>, children: [
             {path: '', element: <Navigate to={`home`}/>},
             {path: 'home', element: <HomePage/>, children: [
