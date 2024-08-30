@@ -3,20 +3,14 @@ import {useEffect, useState} from "react";
 import {getGroups} from "../../../../api/groupApi.js";
 import {getUsers} from "../../../../api/usersApi.js";
 import {errorNotification} from "../../../../utils/notificationHelper.js";
-import {Button, CircularProgress} from "@mui/material";
-import SendIcon from '@mui/icons-material/Send';
+import {CircularProgress} from "@mui/material";
 import {createConversation} from "../../../../api/conversationApi.jsx";
-import {useSocket} from "../../../../context/SocketContext.jsx";
 import classes from "./Conversation.module.css";
 import ChatBox from "../../../../components/chat-box/ChatBox.jsx";
-import {useSelector} from "react-redux";
 
 export default function ConversationPage() {
-    const loggedInUser = useSelector(state => state.authData.user);
-    const socket = useSocket();
     const {chatEntityId, isGroup} = useParams();
     const [chatEntity, setChatEntity] = useState(null);
-    const [message, setMessage] = useState('');
     const [conversationId, setConversationId] = useState(null);
 
     const getApiFunction = () => {
@@ -57,17 +51,6 @@ export default function ConversationPage() {
         handleConversationCreation();
     }, [chatEntityId, isGroup]);
 
-    const handleSentMessage = (e) => {
-        e.preventDefault();
-        const data = {
-            message: message,
-            conversationId: conversationId,
-            senderId: loggedInUser.id
-        }
-        socket.emit('conversation', data);
-        setMessage('');
-    }
-
     return (
         <>
             {chatEntity ? (
@@ -76,23 +59,9 @@ export default function ConversationPage() {
                         <div className={`p-2`}>
                             <p className={`my-1`}>{chatEntity.name}</p>
                         </div>
-                        <div className={`mb-2 p-1 ${classes.chatTextBox}`} id="chat-box-container">
-                            <div className={classes.chatBoxContainer}>
-                                {conversationId && <ChatBox conversationId={conversationId}/>}
-                            </div>
+                        <div className={`p-1`} style={{height: '90%'}}>
+                            {conversationId && <ChatBox conversationId={conversationId}/>}
                         </div>
-                        <form onSubmit={handleSentMessage} className={`d-flex`}>
-                            <input
-                                type="text"
-                                value={message}
-                                onChange={(event) => setMessage(event.target.value)}
-                                placeholder="Enter something here"
-                                className={`form-control`}
-                            />
-                            <Button type="submit">
-                                <SendIcon/>
-                            </Button>
-                        </form>
                     </div>
                 </>
             ) : <div className={`w-100 h-100 d-flex justify-content-center align-items-center`}>
